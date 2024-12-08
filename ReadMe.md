@@ -35,6 +35,11 @@ task-manager/
 	2.	Restore Tasks: Click “Restore Tasks” to fetch tasks from tasks.txt and populate them.
 	3.	File Sync: Include tasks.txt in the GitHub repository for portability.
 
+### Enhancement
+	1.	When tasks are backed up, the PHP script calculates the full file path using `__DIR__`.
+	2.	The server response now includes the filePath.
+	3.	The client-side JavaScript reads the filePath from the response and displays it in the confirmation alert.
+
 ## Usage
 
 	1.	Enter a task in the input field and click “Add Task.”
@@ -45,6 +50,8 @@ task-manager/
 	•	Local storage ensures quick client-side functionality.
 	•	Server-side backup allows tasks to be shared or restored across machines.
 	•	Minimal additional setup while preserving SPA functionality.
+
+
 
 This simple SPA can serve as a quick task tracker while showcasing fundamental web development concepts!
 

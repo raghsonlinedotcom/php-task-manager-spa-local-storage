@@ -16,12 +16,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Save tasks to the server
     const saveTasksToServer = async () => {
         const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        await fetch('tasks.php?action=save', {
+        const response = await fetch('tasks.php?action=save', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(tasks),
+            body: JSON.stringify(tasks)
         });
-        alert('Tasks backed up to server!');
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            alert(`Tasks backed up to server!\nFile Path: ${result.filePath}`);
+        } else {
+            alert('Failed to back up tasks.');
+        }
     };
 
     // Save tasks to local storage
