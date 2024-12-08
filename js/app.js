@@ -2,17 +2,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskInput = document.getElementById('taskInput');
     const taskList = document.getElementById('taskList');
     const addTaskButton = document.getElementById('addTaskButton');
+    const saveTasksButton = document.getElementById('saveTasksButton');
+    const loadTasksButton = document.getElementById('loadTasksButton');
 
-    // Load tasks from local storage
-    const loadTasks = () => {
+    // Fetch tasks from the server on restore
+    const fetchTasksFromServer = async () => {
+        const response = await fetch('tasks.php?action=load');
+        const data = await response.json();
+        localStorage.setItem('tasks', JSON.stringify(data));
+        loadTasks();
+    };
+
+    // Save tasks to the server
+    const saveTasksToServer = async () => {
         const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        taskList.innerHTML = ''; // Clear current list
-        tasks.forEach((task, index) => renderTask(task, index));
+        const response = await fetch('tasks.php?action=save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(tasks)
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+            alert(`Tasks backed up to server!\nFile Path: ${result.filePath}, \nbytesWritten: ${result.bytesWritten}`);
+        } else {
+            alert('Failed to back up tasks.');
+        }
     };
 
     // Save tasks to local storage
     const saveTasks = (tasks) => {
         localStorage.setItem('tasks', JSON.stringify(tasks));
+    };
+
+    // Load tasks from local storage
+    const loadTasks = () => {
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        taskList.innerHTML = '';
+        tasks.forEach((task, index) => renderTask(task, index));
     };
 
     // Render a single task
@@ -29,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
-        // Mark task as completed
         li.querySelector('.mark-completed').addEventListener('click', () => {
             const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
             tasks[index].completed = !tasks[index].completed;
@@ -37,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
             loadTasks();
         });
 
-        // Delete task
         li.querySelector('.delete-task').addEventListener('click', () => {
             const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
             tasks.splice(index, 1);
@@ -48,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         taskList.appendChild(li);
     };
 
-    // Add new task
     addTaskButton.addEventListener('click', () => {
         const taskText = taskInput.value.trim();
         if (taskText === '') {
@@ -59,10 +83,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
         tasks.push({ text: taskText, completed: false });
         saveTasks(tasks);
-        taskInput.value = ''; // Clear input
+        taskInput.value = '';
         loadTasks();
     });
 
-    // Load tasks on page load
+    saveTasksButton.addEventListener('click', saveTasksToServer);
+    loadTasksButton.addEventListener('click', fetchTasksFromServer);
+
     loadTasks();
 });

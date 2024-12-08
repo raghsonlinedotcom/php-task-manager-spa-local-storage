@@ -20,6 +20,12 @@
             </div>
         </div>
         <div class="row justify-content-center mt-4">
+            <div class="col-md-8 d-flex justify-content-between">
+                <button class="btn btn-success" id="saveTasksButton">Backup Tasks</button>
+                <button class="btn btn-secondary" id="loadTasksButton">Restore Tasks</button>
+            </div>
+        </div>        
+        <div class="row justify-content-center mt-4">
             <div class="col-md-8">
                 <ul class="list-group" id="taskList"></ul>
             </div>
