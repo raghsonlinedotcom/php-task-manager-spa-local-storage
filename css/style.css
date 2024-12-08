@@ -1,0 +1,5 @@
+/* Highlight completed tasks */
+.completed {
+    text-decoration: line-through;
+    color: gray;
+}
