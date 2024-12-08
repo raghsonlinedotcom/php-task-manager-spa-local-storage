@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const result = await response.json();
         if (result.status === 'success') {
-            alert(`Tasks backed up to server!\nFile Path: ${result.filePath}`);
+            alert(`Tasks backed up to server!\nFile Path: ${result.filePath}, \nbytesWritten: ${result.bytesWritten}`);
         } else {
             alert('Failed to back up tasks.');
         }
