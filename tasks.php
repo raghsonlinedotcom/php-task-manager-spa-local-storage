@@ -1,5 +1,5 @@
 <?php
-$filename = 'tasks.txt';
+$filename = 'tasks.json';
 
 // Handle Save Request
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] === 'save') {
