@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        const timestamp = new Date().toISOString();
         tasks.push({ text: taskText, completed: false });
         saveTasks(tasks);
         taskInput.value = '';
